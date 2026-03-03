@@ -1,6 +1,7 @@
 // 和用户相关的状态管理（Redux Toolkit）
 
 import { createSlice } from '@reduxjs/toolkit'
+import request from '@/utils/request' 
 
 // 创建 user 切片（slice），包含状态和修改方法
 const userStore = createSlice({
@@ -26,8 +27,18 @@ const { setToken } = userStore.actions
 // 获取 reducer 函数（用于注册到 store）
 const userReducer = userStore.reducer
 
+// 登录获取token异步方法封装
+const fetchLogin = (loginForm) => {
+  return async (dispatch) => {
+    // 1. 发送异步请求
+    const res = await request.post('/authorizations', loginForm)
+    // 2. 提交同步action更新 token 状态
+    dispatch(setToken(res.data.token))
+  }
+}
+
 // 导出 action creator，供组件调用
-export { setToken }
+export { fetchLogin, setToken }
 
 // 默认导出 reducer，用于配置 store
 export default userReducer
