@@ -3,13 +3,18 @@ import { Card, Form, Input, Button } from 'antd'
 import logo from '@/assets/logo.png'
 
 const Login = () => {
+  // 表单提交成功的回调函数，当所有字段验证通过后触发
+  const onFinish = values => {
+    console.log('Success:', values); // 打印表单数据，包含 mobile 和 code 字段的值
+  }
   return (
     <div className="login">
       <Card className="login-container">
         <img className="login-logo" src={logo} alt="" />
         {/* 登录表单 */}
         {/* validateTrigger="onBlur": 设置表单验证触发时机为失去焦点时，避免输入过程中频繁提示错误 */}
-        <Form validateTrigger="onBlur">
+        {/* onFinish={onFinish}: 表单验证通过后的提交处理函数，自动收集所有表单字段的数据 */}
+        <Form onFinish={onFinish} validateTrigger="onBlur">
           <Form.Item 
           name="mobile"
           // 多条校验逻辑 先校验第一条 第一条通过之后再校验第二条
