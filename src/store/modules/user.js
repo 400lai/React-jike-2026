@@ -2,13 +2,14 @@
 
 import { createSlice } from '@reduxjs/toolkit'
 import request from '@/utils/request' 
+import { setToken as _setToken, getToken, removeToken } from '@/utils'
 
 // 创建 user 切片（slice），包含状态和修改方法
 const userStore = createSlice({
   name: "user", // 切片名称，用于生成 action 的 type
   // 初始状态数据
   initialState: {
-    token: localStorage.getItem('token_key') || '' // 用户登录凭证 token
+    token: getToken() || '' // 用户登录凭证 token
   },
   // 同步修改方法（reducer 函数），用于更新状态
   reducers: {
@@ -18,7 +19,7 @@ const userStore = createSlice({
     setToken (state, action) {
       state.token = action.payload // 将传入的 token 值赋给状态
       // localStorage 持久化存储
-      localStorage.setItem('token_key', action.payload)
+      _setToken(action.payload)
     }
   }
 })
