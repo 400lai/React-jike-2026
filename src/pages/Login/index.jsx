@@ -8,11 +8,21 @@ const Login = () => {
       <Card className="login-container">
         <img className="login-logo" src={logo} alt="" />
         {/* 登录表单 */}
-        <Form>
-          <Form.Item>
+        {/* validateTrigger="onBlur": 设置表单验证触发时机为失去焦点时，避免输入过程中频繁提示错误 */}
+        <Form validateTrigger="onBlur">
+          <Form.Item 
+          name="mobile"
+          // 多条校验逻辑 先校验第一条 第一条通过之后再校验第二条
+          rules={[
+            { required: true, message: '请输入手机号' },
+            { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号' }]}
+          >
             <Input size="large" placeholder="请输入手机号" />
           </Form.Item>
-          <Form.Item>
+          <Form.Item
+          name="code"
+          rules={[{ required: true, message: '请输入验证码' }]}
+          >
             <Input size="large" placeholder="请输入验证码" />
           </Form.Item>
           <Form.Item>
