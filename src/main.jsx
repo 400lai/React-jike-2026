@@ -7,6 +7,7 @@ import { RouterProvider } from 'react-router-dom'
 import router from './router'
 import { Provider } from 'react-redux'
 import store from './store'
+import 'normalize.css'
 
 // 创建根节点并渲染应用
 createRoot(document.getElementById('root')).render(

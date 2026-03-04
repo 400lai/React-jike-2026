@@ -9,7 +9,8 @@ const userStore = createSlice({
   name: "user", // 切片名称，用于生成 action 的 type
   // 初始状态数据
   initialState: {
-    token: getToken() || '' // 用户登录凭证 token
+    token: getToken() || '', // 用户登录凭证 token
+    userInfo: {}             // 用户信息对象
   },
   // 同步修改方法（reducer 函数），用于更新状态
   reducers: {
@@ -20,12 +21,20 @@ const userStore = createSlice({
       state.token = action.payload // 将传入的 token 值赋给状态
       // localStorage 持久化存储
       _setToken(action.payload)
+    },
+    setUserInfo (state, action) {
+      state.userInfo = action.payload
+    },
+    clearUserInfo (state) {
+      state.token = ''
+      state.userInfo = {}
+      removeToken()
     }
   }
 })
 
 // 解构出 action creator（用于 dispatch 触发状态更新）
-const { setToken } = userStore.actions
+const { setToken, setUserInfo, clearUserInfo } = userStore.actions
 
 // 获取 reducer 函数（用于注册到 store）
 const userReducer = userStore.reducer
@@ -40,8 +49,16 @@ const fetchLogin = (loginForm) => {
   }
 }
 
+// 获取个人用户信息异步方法
+const fetchUserInfo = () => {
+  return async (dispatch) => {
+    const res = await request.post('/user/profile')
+    dispatch(setUserInfo(res.data))
+  }
+}
+
 // 导出 action creator，供组件调用
-export { fetchLogin, setToken }
+export { fetchLogin, fetchUserInfo, clearUserInfo }
 
 // 默认导出 reducer，用于配置 store
 export default userReducer
