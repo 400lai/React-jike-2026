@@ -1,8 +1,8 @@
 // 和用户相关的状态管理（Redux Toolkit）
 
 import { createSlice } from '@reduxjs/toolkit'
-import request from '@/utils/request' 
 import { setToken as _setToken, getToken, removeToken } from '@/utils'
+import { loginAPI, getProfileAPI } from '@/apis/user'
 
 // 创建 user 切片（slice），包含状态和修改方法
 const userStore = createSlice({
@@ -43,7 +43,7 @@ const userReducer = userStore.reducer
 const fetchLogin = (loginForm) => {
   return async (dispatch) => {
     // 1. 发送异步请求
-    const res = await request.post('/authorizations', loginForm)
+    const res = await loginAPI(loginForm)
     // 2. 提交同步action更新 token 状态
     dispatch(setToken(res.data.token))
   }
@@ -52,7 +52,7 @@ const fetchLogin = (loginForm) => {
 // 获取个人用户信息异步方法
 const fetchUserInfo = () => {
   return async (dispatch) => {
-    const res = await request.get('/user/profile')
+    const res = await getProfileAPI()
     dispatch(setUserInfo(res.data))
   }
 }
